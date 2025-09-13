@@ -1,3 +1,4 @@
+using HotelProject.Api.Mapping;
 using HotelProject.BusinessLayer.Extensions;
 using HotelProject.DataAccessLayer.Concrete;
 using HotelProject.DataAccessLayer.Extensions;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Context>();
 builder.Services.AddBusinessLayerServices();
 builder.Services.AddDataAccessLayerServices();
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddCors(opt =>
 {
