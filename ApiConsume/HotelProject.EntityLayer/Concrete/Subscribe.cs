@@ -1,7 +1,7 @@
 ﻿namespace HotelProject.EntityLayer.Concrete;
 
-public class Susbcribe
+public class Subscribe
 {
-    public int SusbcribeId { get; set; }
+    public int SubscribeId { get; set; }
     public string Mail { get; set; } = default!;
 }
