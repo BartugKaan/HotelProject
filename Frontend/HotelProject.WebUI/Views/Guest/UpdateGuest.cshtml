@@ -11,12 +11,15 @@
         <input type="hidden" asp-for="GuestId" />
         <label>Name</label>
         <input type="text" class="form-control" asp-for="Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
         <br />
         <label>Surname</label>
         <input type="text" class="form-control" asp-for="Surname" />
+		<span asp-validation-for="Surname" class="text-danger"></span>
         <br />
         <label>City</label>
         <input type="text" class="form-control" asp-for="City" />
+		<span asp-validation-for="City" class="text-danger"></span>
         <br />
         <button class="btn btn-outline-warning">Update Guest</button>
         <a href="/Guest/Index" class="btn btn-outline-secondary">Back to List</a>
