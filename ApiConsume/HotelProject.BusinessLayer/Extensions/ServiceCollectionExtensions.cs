@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISubscribeService, SubscribeManager> ();
         services.AddScoped<ITestimonialService, TestimonialManager> ();
         services.AddScoped<IAboutService, AboutManager> ();
+        services.AddScoped<IBookingService, BookingManager> ();
 
         return services;
     }

@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISubscribeDal, EfSubscribeDal>();
         services.AddScoped<ITestimonialDal, EfTestimonialDal>();
         services.AddScoped<IAboutDal, EFAboutDal>();
+        services.AddScoped<IBookingDal, EfBookingDal>();
 
         return services;
     }
