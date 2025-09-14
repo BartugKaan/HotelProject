@@ -3,7 +3,10 @@
     <Project Path="ApiConsume/HotelProject.Api/HotelProject.Api.csproj" />
     <Project Path="ApiConsume/HotelProject.BusinessLayer/HotelProject.BusinessLayer.csproj" />
     <Project Path="ApiConsume/HotelProject.DataAccessLayer/HotelProject.DataAccessLayer.csproj" />
+    <Project Path="ApiConsume/HotelProject.DtoLayer/HotelProject.DtoLayer.csproj" />
     <Project Path="ApiConsume/HotelProject.EntityLayer/HotelProject.EntityLayer.csproj" />
   </Folder>
-  <Folder Name="/Frontend/" />
+  <Folder Name="/Frontend/">
+    <Project Path="Frontend/HotelProject.WebUI/HotelProject.WebUI.csproj" />
+  </Folder>
 </Solution>
