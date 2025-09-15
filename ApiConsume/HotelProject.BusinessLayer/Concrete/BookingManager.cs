@@ -15,7 +15,7 @@ namespace HotelProject.BusinessLayer.Concrete
 
         public void ApproveBooking(int id)
         {
-            
+
             var value = _bookingDal.GetById(id);
             if (value != null)
             {
@@ -24,6 +24,31 @@ namespace HotelProject.BusinessLayer.Concrete
             }
             return;
 
+        }
+
+        public void RejectBooking(int id)
+        {
+            var value = _bookingDal.GetById(id);
+            if (value != null)
+            {
+                value.Status = "Rejected";
+                _bookingDal.Update(value);
+            }
+        }
+
+        public void AddToWaitList(int id)
+        {
+            var value = _bookingDal.GetById(id);
+            if (value != null)
+            {
+                value.Status = "Waiting";
+                _bookingDal.Update(value);
+            }
+        }
+
+        public List<Booking> GetBookingsByStatus(string status)
+        {
+            return _bookingDal.GetAll().Where(b => b.Status == status).ToList();
         }
 
         public void TDelete(Booking t)

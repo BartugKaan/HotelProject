@@ -1,70 +1,69 @@
 ﻿using HotelProject.BusinessLayer.Abstract;
 using HotelProject.EntityLayer.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelProject.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class BookingController : ControllerBase
+    public class BookingController : BaseController<Booking, IBookingService>
     {
-        private readonly IBookingService _service;
-
-        public BookingController(IBookingService service)
+        public BookingController(IBookingService service) : base(service)
         {
-            _service = service;
         }
 
-        [HttpGet]
-        public IActionResult GetBooking()
+        [HttpPut("UpdateBookingStatusToApproved")]
+        public IActionResult UpdateBookingStatusToApproved(int id)
         {
-            var values = _service.TGetAll();
-            return Ok(values);
-        }
-
-        [HttpPost]
-        public IActionResult AddBooking(Booking booking)
-        {
-            _service.TInsert(booking);
-            return Ok("AddService works : " + booking.BookingId);
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteBooking(int id)
-        {
-            var service = _service.TGetById(id);
-            if (service == null)
+            try
             {
-                return NotFound();
+                _service.ApproveBooking(id);
+                return Ok(new { Success = true, Message = "Booking approved successfully" });
             }
-            _service.TDelete(service);
-            return Ok("DeleteService works");
-        }
-
-        [HttpPut("UpdateBooking")]
-        public IActionResult UpdateBooking(Booking booking)
-        {
-            _service.TUpdate(booking);
-            return Ok("UpdateService works");
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetBooking(int id)
-        {
-            var booking = _service.TGetById(id);
-            if (booking == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(new { Success = false, Message = $"An error occurred: {ex.Message}" });
             }
-            return Ok(booking);
         }
 
-        [HttpPut("UpdateBookingStatusToApprroved")]
-        public IActionResult UpdateBookingStatusToApprroved(int id)
+        [HttpPut("RejectBooking")]
+        public IActionResult RejectBooking(int id)
         {
-            _service.ApproveBooking(id);
-            return Ok();
+            try
+            {
+                _service.RejectBooking(id);
+                return Ok(new { Success = true, Message = "Booking rejected successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpPut("AddToWaitList")]
+        public IActionResult AddToWaitList(int id)
+        {
+            try
+            {
+                _service.AddToWaitList(id);
+                return Ok(new { Success = true, Message = "Booking added to wait list successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("GetByStatus/{status}")]
+        public IActionResult GetBookingsByStatus(string status)
+        {
+            try
+            {
+                var bookings = _service.GetBookingsByStatus(status);
+                return Ok(bookings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = $"An error occurred: {ex.Message}" });
+            }
         }
     }
 }

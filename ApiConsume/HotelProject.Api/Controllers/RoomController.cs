@@ -2,77 +2,62 @@
 using HotelProject.BusinessLayer.Abstract;
 using HotelProject.DtoLayer.Dtos.Room;
 using HotelProject.EntityLayer.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HotelProject.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RoomController : ControllerBase
+    public class RoomController : BaseController<Room, IRoomService>
     {
-
-        private readonly IRoomService _roomService;
         private readonly IMapper _mapper;
 
-        public RoomController(IRoomService roomService, IMapper mapper)
+        public RoomController(IRoomService roomService, IMapper mapper) : base(roomService)
         {
-            _roomService = roomService;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public  IActionResult GetRooms()
-        {
-            var values = _roomService.TGetAll();
-            return Ok(values);
-        }
-
-        [HttpPost]
-        public IActionResult AddRoom(RoomAddDto roomAddDto)
+        [HttpPost("AddRoomDto")]
+        public IActionResult AddRoomWithDto(RoomAddDto roomAddDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Invalid model state");
             }
-            var values = _mapper.Map<Room>(roomAddDto);
-            _roomService.TInsert(values);
-            return Ok();
+            var room = _mapper.Map<Room>(roomAddDto);
+            return Add(room);
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteRoom(int id)
-        {
-            var room = _roomService.TGetById(id);
-            if (room == null) {
-                return NotFound();
-            }
-            _roomService.TDelete(room);
-            return Ok();
-        }
-
-        [HttpPut]
-        public IActionResult UpdateRoom(UpdateRoomDto roomDto)
+        [HttpPut("UpdateRoomDto")]
+        public IActionResult UpdateRoomWithDto(UpdateRoomDto roomDto)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("Invalid model state");
             }
-            var values = _mapper.Map<Room>(roomDto);
-            _roomService.TUpdate(values);
-            return Ok();
+            var room = _mapper.Map<Room>(roomDto);
+            return Update(room);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetRoom(int id)
+        // Backward compatibility için eski endpoint'leri koru
+        [HttpPost("CreateRoom")]
+        public IActionResult CreateRoom(RoomAddDto roomAddDto)
         {
-            var room = _roomService.TGetById(id);
-            if (room == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest("Invalid model state");
             }
-            return Ok(room);
+            var room = _mapper.Map<Room>(roomAddDto);
+            return Add(room);
+        }
+
+        [HttpPut("UpdateRoom")]
+        public IActionResult UpdateRoomLegacy(UpdateRoomDto roomDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model state");
+            }
+            var room = _mapper.Map<Room>(roomDto);
+            return Update(room);
         }
     }
 }

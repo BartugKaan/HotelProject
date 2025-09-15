@@ -1,4 +1,6 @@
 using HotelProject.Api.Mapping;
+using HotelProject.Api.Models;
+using HotelProject.Api.Services;
 using HotelProject.BusinessLayer.Extensions;
 using HotelProject.DataAccessLayer.Concrete;
 using HotelProject.DataAccessLayer.Extensions;
@@ -10,6 +12,10 @@ builder.Services.AddDbContext<Context>();
 builder.Services.AddBusinessLayerServices();
 builder.Services.AddDataAccessLayerServices();
 builder.Services.AddAutoMapper(typeof(Program));
+
+// Add Email Service
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddCors(opt =>
 {
