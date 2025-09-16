@@ -42,7 +42,7 @@ namespace HotelProject.Api.Controllers
             return Ok("DeleteService works");
         }
 
-        [HttpPut]
+        [HttpPut("UpdateBooking")]
         public IActionResult UpdateBooking(Booking booking)
         {
             _service.TUpdate(booking);
@@ -58,6 +58,13 @@ namespace HotelProject.Api.Controllers
                 return NotFound();
             }
             return Ok(booking);
+        }
+
+        [HttpPut("UpdateBookingStatusToApprroved")]
+        public IActionResult UpdateBookingStatusToApprroved(int id)
+        {
+            _service.ApproveBooking(id);
+            return Ok();
         }
     }
 }
