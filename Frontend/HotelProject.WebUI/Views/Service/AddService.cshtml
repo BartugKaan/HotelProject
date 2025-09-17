@@ -1,0 +1,26 @@
+﻿@using HotelProject.WebUI.Dtos.ServiceDto
+@model CreateServiceDto
+@{
+    ViewData["Title"] = "AddService";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Add Sertvice</h1>
+<div class="container">
+	<form method="post">
+		<label for="Icon">Service Icon</label>
+		<input type="text" class="form-control" id="Icon" name="Icon" />
+		<span asp-validation-for="Icon" class="text-danger"></span>
+		<br />
+		<label for="Title">Service Title</label>
+		<input type="text" class="form-control" id="Title" name="Title" />
+		<span asp-validation-for="Title" class="text-danger"></span>
+		<br />
+		<label for="Description">Service Description</label>
+		<input type="Description" class="form-control" id="Description" name="Description" />
+		<span asp-validation-for="Description" class="text-danger"></span>
+		<br />
+		<button type="submit" class="btn btn-primary" class="text-danger">Add Service</button>
+	</form>
+</div>
+

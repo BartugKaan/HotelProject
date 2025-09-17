@@ -1,0 +1,35 @@
+﻿@using HotelProject.WebUI.Dtos.ServiceDto
+@model List<ResultServiceDto>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Service Managment</h1>
+
+<div class="container">
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Icon</th>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+				<th>@item.ServiceId</th>
+                <th>@item.Icon</th>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>
+                    <a asp-action="View" asp-route-id="@item.ServiceId" class="btn btn-primary">View</a>
+                    <a asp-action="UpdateService" asp-route-id="@item.ServiceId" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteService" asp-route-id="@item.ServiceId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="/Service/AddService/" class="btn btn-outline-success">Create New Service</a>
+</div>
+

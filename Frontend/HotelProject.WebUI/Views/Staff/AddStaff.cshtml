@@ -9,23 +9,15 @@
     <form method="post">
 		<label for="Name">Full Name</label>
 		<input type="text" class="form-control" id="Name" name="Name" />
+		<span asp-validation-for="Name" class="text-danger"></span>
 		<br />
-		<label for="Title">Title</label>
+		<label for="Title">Service Title</label>
 		<input type="text" class="form-control" id="Title" name="Title" />
 		<br />
-		<label for="Image">Image URL</label>
+		<label for="Image">Service Description</label>
 		<input type="text" class="form-control" id="ImageUrl" name="Image" />
 		<br />
-		<label for="FacebookLink">Facebook URL</label>
-		<input type="text" class="form-control" id="FacebookLink" name="FacebookLink" />
-		<br />
-		<label for="TwitterLink">Twitter URL</label>
-		<input type="text" class="form-control" id="TwitterLink" name="TwitterLink" />
-		<br />
-		<label for="InstegramLink">Intagram URL</label>
-		<input type="text" class="form-control" id="InstegramLink" name="InstegramLink" />
-		<br />
-		<button type="submit" class="btn btn-primary">Add Staff</button>
+		<button type="submit" class="btn btn-primary">Add Service</button>
     </form>
 </div>
 
