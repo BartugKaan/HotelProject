@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using HotelProject.BusinessLayer.Abstract;
+using HotelProject.DtoLayer.Dtos.Room;
+using HotelProject.EntityLayer.Concrete;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HotelProject.Api.Controllers
 {
@@ -7,34 +12,67 @@ namespace HotelProject.Api.Controllers
     [ApiController]
     public class RoomController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetRooms()
+
+        private readonly IRoomService _roomService;
+        private readonly IMapper _mapper;
+
+        public RoomController(IRoomService roomService, IMapper mapper)
         {
-            return Ok("GetRooms works");
+            _roomService = roomService;
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        public  IActionResult GetRooms()
+        {
+            var values = _roomService.TGetAll();
+            return Ok(values);
         }
 
         [HttpPost]
-        public IActionResult AddRoom()
+        public IActionResult AddRoom(RoomAddDto roomAddDto)
         {
-            return Ok("AddRoom works");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var values = _mapper.Map<Room>(roomAddDto);
+            _roomService.TInsert(values);
+            return Ok();
         }
 
-        [HttpDelete]
-        public IActionResult DeleteRoom()
+        [HttpDelete("{id}")]
+        public IActionResult DeleteRoom(int id)
         {
-            return Ok("DeleteRoom works");
+            var room = _roomService.TGetById(id);
+            if (room == null) {
+                return NotFound();
+            }
+            _roomService.TDelete(room);
+            return Ok();
         }
 
         [HttpPut]
-        public IActionResult UpdateRoom()
+        public IActionResult UpdateRoom(UpdateRoomDto roomDto)
         {
-            return Ok("UpdateRoom works");
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var values = _mapper.Map<Room>(roomDto);
+            _roomService.TUpdate(values);
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public IActionResult GetRoom(int id)
         {
-            return Ok($"GetRoom works for id: {id}");
+            var room = _roomService.TGetById(id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return Ok(room);
         }
     }
 }

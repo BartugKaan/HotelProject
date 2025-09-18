@@ -27,29 +27,33 @@ namespace HotelProject.Api.Controllers
         public IActionResult AddTestimonial(Testimonial testimonial)
         {
             _testimonialService.TInsert(testimonial);
-            return Ok("AddTestimonial works : " + testimonial.TestimonialId);
+            return Ok(testimonial);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteTestimonial(int id)
         {
             var testimonial = _testimonialService.TGetById(id);
             _testimonialService.TDelete(testimonial);
-            return Ok("DeleteTestimonial works");
+            return Ok();
         }
 
         [HttpPut]
         public IActionResult UpdateTestimonial(Testimonial testimonial)
         {
             _testimonialService.TUpdate(testimonial);
-            return Ok("UpdateTestimonial works");
+            return Ok(testimonial);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetTestimonial(int id)
         {
             var testimonial = _testimonialService.TGetById(id);
-            return Ok($"GetTestimonial works for id: {testimonial}");
+            if (testimonial == null)
+            {
+                return NotFound();
+            }
+            return Ok(testimonial);
         }
     }
 }
