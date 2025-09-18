@@ -4,7 +4,7 @@ public class Room
 {
     public int RoomId { get; set; }
     public string RoomNumber { get; set; } = default!;
-    public string CoverImage { get; set; }
+    public string CoverImage { get; set; } = default!;
     public float Price { get; set; }
     public string Title { get; set; } = default!;
     public int BedCount { get; set; }
