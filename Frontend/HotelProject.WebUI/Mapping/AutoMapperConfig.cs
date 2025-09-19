@@ -29,6 +29,8 @@ public class AutoMapperConfig : Profile
         CreateMap<CreateSubscribeDto, Subscribe>().ReverseMap();
 
         CreateMap<CreateBookingDto, Booking>().ReverseMap();
+        CreateMap<ResultBookingDto, Booking>().ReverseMap();
+        CreateMap<ApprovedReserrvationDto, Booking>().ReverseMap();
 
     }
 }
