@@ -1,4 +1,5 @@
-﻿using HotelProject.WebUI.Dtos.StaffDto;
+﻿using HotelProject.WebUI.Dtos.BookingDto;
+using HotelProject.WebUI.Dtos.StaffDto;
 using HotelProject.WebUI.Dtos.SubscribeDto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -26,13 +27,15 @@ public class DefaultController : Controller
     }
 
     [HttpPost]
-    public async Task<PartialViewResult> _NewsletterPartialAsync(CreateSubscribeDto dto)
+    public async Task<PartialViewResult> _NewsletterPartialAsync(CreateBookingDto dto)
     {
         if(!ModelState.IsValid)
         {
             return PartialView();
         }
 
+        dto.Status = "Waiting Approval";
+        dto.Description = "New Booking";
         var client = _httpClientFactory.CreateClient();
         var jsonData = JsonConvert.SerializeObject(dto);
         StringContent stringContent = new StringContent(jsonData, System.Text.Encoding.UTF8, "application/json");
