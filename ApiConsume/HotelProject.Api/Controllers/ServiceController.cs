@@ -1,4 +1,4 @@
-﻿using HotelProject.BusinessLayer.Abstract;
+using HotelProject.BusinessLayer.Abstract;
 using HotelProject.EntityLayer.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,10 +30,14 @@ namespace HotelProject.Api.Controllers
             return Ok("AddService works : " + service.ServiceId);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteService(int id)
         {
             var service = _service.TGetById(id);
+            if (service == null)
+            {
+                return NotFound();
+            }
             _service.TDelete(service);
             return Ok("DeleteService works");
         }
@@ -49,7 +53,11 @@ namespace HotelProject.Api.Controllers
         public IActionResult GetService(int id)
         {
             var service = _service.TGetById(id);
-            return Ok($"GetService works for id: {service}");
+            if (service == null)
+            {
+                return NotFound();
+            }
+            return Ok(service);
         }
     }
 }

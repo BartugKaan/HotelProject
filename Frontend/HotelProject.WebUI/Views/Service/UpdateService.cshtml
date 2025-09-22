@@ -1,0 +1,29 @@
+﻿@using HotelProject.WebUI.Dtos.ServiceDto
+@model UpdateServiceDto
+@{
+    ViewData["Title"] = "UpdateService";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Update Service</h1>
+
+<div class="container">
+	<form method="post">
+		<input type="hidden" asp-for="ServiceId" />
+		<label>Service Icon</label>
+		<input type="text" class="form-control" asp-for="Icon" />
+		<span asp-validation-for="Icon" class="text-danger"></span>
+		<br />
+		<label>Service Title</label>
+		<input type="text" class="form-control" asp-for="Title" />
+		<span asp-validation-for="Title" class="text-danger"></span>
+		<br />
+		<label>Service Description</label>
+		<input type="text" class="form-control" asp-for="Description" />
+		<span asp-validation-for="Description" class="text-danger"></span>
+		<br />
+		<button class="btn btn-outline-warning">Update Staff</button>
+		<a href="/Staff/Index" class="btn btn-outline-secondary">Back to List</a>
+	</form>
+</div>
+

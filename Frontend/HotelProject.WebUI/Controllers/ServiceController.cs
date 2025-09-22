@@ -1,4 +1,4 @@
-﻿using HotelProject.WebUI.Dtos.ServiceDto;
+using HotelProject.WebUI.Dtos.ServiceDto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -60,7 +60,7 @@ namespace HotelProject.WebUI.Controllers
             {
                 return RedirectToAction("Index");
             }
-            return View();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -80,6 +80,11 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateService(UpdateServiceDto viewModel)
         {
+            if(!ModelState.IsValid)
+            {
+                return View();
+            }
+
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(viewModel);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
