@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IStaffDal, EfStaffDal>();
         services.AddScoped<ISubscribeDal, EfSubscribeDal>();
         services.AddScoped<ITestimonialDal, EfTestimonialDal>();
+        services.AddScoped<IAboutDal, EFAboutDal>();
 
         return services;
     }
