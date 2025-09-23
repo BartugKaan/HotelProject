@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IStaffService, StaffManager> ();
         services.AddScoped<ISubscribeService, SubscribeManager> ();
         services.AddScoped<ITestimonialService, TestimonialManager> ();
+        services.AddScoped<IAboutService, AboutManager> ();
 
         return services;
     }
