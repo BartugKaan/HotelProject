@@ -1,0 +1,39 @@
+﻿@model List<TestimonialViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Testimonial Managment</h1>
+
+<div class="container">
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Full Name</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.TestimonialId</th>
+                <td>@item.Name</td>
+                <td>@item.Title</td>
+                <td>@item.Description</td>
+                <td>@item.Image</td>
+                <td>
+                    <a asp-action="View" asp-route-id="@item.TestimonialId" class="btn btn-primary">View</a>
+                    <a asp-action="UpdateStaff" asp-route-id="@item.TestimonialId" class="btn btn-warning">Edit</a>
+                    <a asp-action="DeleteStaff" asp-route-id="@item.TestimonialId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="/Testimonial/AddTestimonial/" class="btn btn-outline-success">Create New Testimonial</a>
+</div>
+
+
+
