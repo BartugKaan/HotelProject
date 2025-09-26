@@ -1,30 +1,31 @@
 using HotelProject.WebUI.Dtos.ServiceDto;
+using HotelProject.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace HotelProject.WebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ServiceController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ServiceApiService _serviceApiService;
+        private readonly CreateServiceApiService _createServiceApiService;
+        private readonly UpdateServiceApiService _updateServiceApiService;
 
-        public ServiceController(IHttpClientFactory httpClientFactory)
+        public ServiceController(
+            ServiceApiService serviceApiService,
+            CreateServiceApiService createServiceApiService,
+            UpdateServiceApiService updateServiceApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _serviceApiService = serviceApiService;
+            _createServiceApiService = createServiceApiService;
+            _updateServiceApiService = updateServiceApiService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("http://localhost:5283/api/Service");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultServiceDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _serviceApiService.GetAllAsync();
+            return View(values ?? new List<ResultServiceDto>());
         }
 
         [HttpGet]
@@ -36,16 +37,13 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddService(CreateServiceDto serviceDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(serviceDto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("http://localhost:5283/api/Service", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var result = await _createServiceApiService.CreateAsync(serviceDto);
+            if (result)
             {
                 return RedirectToAction("Index");
             }
@@ -54,25 +52,17 @@ namespace HotelProject.WebUI.Controllers
 
         public async Task<IActionResult> DeleteService(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"http://localhost:5283/api/Service/{id}");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Index");
-            }
+            var result = await _serviceApiService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<IActionResult> UpdateService(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"http://localhost:5283/api/Service/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var service = await _updateServiceApiService.GetByIdAsync(id);
+            if (service != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateServiceDto>(jsonData);
-                return View(values);
+                return View(service);
             }
             return View();
         }
@@ -80,17 +70,13 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateService(UpdateServiceDto viewModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(viewModel);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("http://localhost:5283/api/Service", stringContent);
-
-            if (responseMessage.IsSuccessStatusCode)
+            var result = await _updateServiceApiService.UpdateAsync(viewModel);
+            if (result)
             {
                 return RedirectToAction("Index");
             }

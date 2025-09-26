@@ -1,17 +1,16 @@
 using HotelProject.WebUI.Dtos.BookingDto;
+using HotelProject.WebUI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace HotelProject.WebUI.Controllers
 {
     public class BookingController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly CreateBookingApiService _createBookingApiService;
 
-        public BookingController(IHttpClientFactory httpClientFactory)
+        public BookingController(CreateBookingApiService createBookingApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _createBookingApiService = createBookingApiService;
         }
 
         public IActionResult Index()
@@ -35,20 +34,15 @@ namespace HotelProject.WebUI.Controllers
 
             try
             {
-                var client = _httpClientFactory.CreateClient();
-                var jsonData = JsonConvert.SerializeObject(dto);
-                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                var responseMessage = await client.PostAsync("http://localhost:5283/api/Booking", stringContent);
-
-                if (responseMessage.IsSuccessStatusCode)
+                var result = await _createBookingApiService.CreateAsync(dto);
+                if (result)
                 {
                     TempData["Success"] = "Booking successfully created!";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    var errorContent = await responseMessage.Content.ReadAsStringAsync();
-                    TempData["Error"] = $"Booking failed. Error: {errorContent}";
+                    TempData["Error"] = "Booking failed. Please try again.";
                     return PartialView(dto);
                 }
             }

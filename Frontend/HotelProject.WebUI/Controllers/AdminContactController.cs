@@ -1,30 +1,24 @@
 ﻿using HotelProject.WebUI.Dtos.ContactDto;
-using HotelProject.WebUI.Dtos.GuestDto;
+using HotelProject.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace HotelProject.WebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminContactController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ContactApiService _contactApiService;
 
-        public AdminContactController(IHttpClientFactory httpClientFactory)
+        public AdminContactController(ContactApiService contactApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _contactApiService = contactApiService;
         }
+
         public async Task<IActionResult> InboxAsync()
         {
-
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("http://localhost:5283/api/Contact");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultContactDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _contactApiService.GetAllAsync();
+            return View(values ?? new List<ResultContactDto>());
         }
 
         public PartialViewResult SidebarAdminContactPartial()

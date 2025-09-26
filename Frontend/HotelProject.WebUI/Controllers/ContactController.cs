@@ -30,12 +30,34 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddContact(CreateContactDto dto)
         {
-            dto.ContactDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+            try
+            {
+                dto.ContactDate = DateTime.Parse(DateTime.Now.ToShortDateString());
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(dto);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            await client.PostAsync("http://localhost:5283/api/Contact", stringContent);
+                var client = _httpClientFactory.CreateClient();
+                var jsonData = JsonConvert.SerializeObject(dto);
+                StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+                // Use the new email-enabled endpoint
+                var response = await client.PostAsync("http://localhost:5283/api/Contact/AddContactWithEmail", stringContent);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<dynamic>(responseContent);
+
+                    TempData["Success"] = "Thank you! Your message has been sent successfully. You will receive a confirmation email shortly.";
+                }
+                else
+                {
+                    TempData["Error"] = "There was an issue sending your message. Please try again.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"An error occurred: {ex.Message}";
+            }
+
             return RedirectToAction("Index");
         }
     }

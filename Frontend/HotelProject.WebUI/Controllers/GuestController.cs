@@ -1,30 +1,31 @@
 using HotelProject.WebUI.Dtos.GuestDto;
+using HotelProject.WebUI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace HotelProject.WebUI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class GuestController : Controller
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly GuestApiService _guestApiService;
+        private readonly CreateGuestApiService _createGuestApiService;
+        private readonly UpdateGuestApiService _updateGuestApiService;
 
-        public GuestController(IHttpClientFactory httpClientFactory)
+        public GuestController(
+            GuestApiService guestApiService,
+            CreateGuestApiService createGuestApiService,
+            UpdateGuestApiService updateGuestApiService)
         {
-            _httpClientFactory = httpClientFactory;
+            _guestApiService = guestApiService;
+            _createGuestApiService = createGuestApiService;
+            _updateGuestApiService = updateGuestApiService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync("http://localhost:5283/api/Guest");
-            if (responseMessage.IsSuccessStatusCode)
-            {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<ResultGuestDto>>(jsonData);
-                return View(values);
-            }
-            return View();
+            var values = await _guestApiService.GetAllAsync();
+            return View(values ?? new List<ResultGuestDto>());
         }
 
         [HttpGet]
@@ -36,16 +37,13 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> AddGuest(CreateGuestDto viewModel)
         {
-            if(ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(viewModel);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PostAsync("http://localhost:5283/api/Guest", stringContent);
-            if (responseMessage.IsSuccessStatusCode)
+            var result = await _createGuestApiService.CreateAsync(viewModel);
+            if (result)
             {
                 return RedirectToAction("Index");
             }
@@ -54,9 +52,8 @@ namespace HotelProject.WebUI.Controllers
 
         public async Task<IActionResult> DeleteGuest(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.DeleteAsync($"http://localhost:5283/api/Guest/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var result = await _guestApiService.DeleteAsync(id);
+            if (result)
             {
                 return RedirectToAction("Index");
             }
@@ -66,13 +63,10 @@ namespace HotelProject.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateGuest(int id)
         {
-            var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"http://localhost:5283/api/Guest/{id}");
-            if (responseMessage.IsSuccessStatusCode)
+            var guest = await _updateGuestApiService.GetByIdAsync(id);
+            if (guest != null)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<UpdateGuestDto>(jsonData);
-                return View(values);
+                return View(guest);
             }
             return View();
         }
@@ -80,18 +74,13 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateGuest(UpdateGuestDto viewModel)
         {
-
-            if(ModelState.IsValid == false)
+            if (!ModelState.IsValid)
             {
                 return View();
             }
 
-            var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(viewModel);
-            StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var responseMessage = await client.PutAsync("http://localhost:5283/api/Guest", stringContent);
-
-            if (responseMessage.IsSuccessStatusCode)
+            var result = await _updateGuestApiService.UpdateAsync(viewModel);
+            if (result)
             {
                 return RedirectToAction("Index");
             }
