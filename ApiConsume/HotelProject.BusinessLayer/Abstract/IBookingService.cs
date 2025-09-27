@@ -4,4 +4,5 @@ namespace HotelProject.BusinessLayer.Abstract;
 
 public interface IBookingService : IGenericService<Booking>
 {
+    void ApproveBooking(int id);
 }
