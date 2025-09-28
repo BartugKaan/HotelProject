@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ITestimonialService, TestimonialManager> ();
         services.AddScoped<IAboutService, AboutManager> ();
         services.AddScoped<IBookingService, BookingManager> ();
+        services.AddScoped<IContactService, ContactManager> ();
 
         return services;
     }

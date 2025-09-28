@@ -1,0 +1,51 @@
+﻿@model CreateRoomDto
+@{
+    ViewData["Title"] = "AddRoom";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container">
+	<h1>Add Room</h1>
+	<div class="container">
+		<form method="post">
+			<label for="Title">Title</label>
+			<input type="text" class="form-control" id="Title" name="Title" />
+			<span asp-validation-for="Title" class="text-danger"></span>
+			<br />
+
+			<label for="Description">Description</label>
+			<input type="text" class="form-control" id="Description" name="Description" />
+			<span asp-validation-for="Description" class="text-danger"></span>
+			<br />
+
+			<label for="Room Number">Room Number</label>
+			<input type="text" class="form-control" id="Room Number" name="RoomNumber" />
+			<span asp-validation-for="RoomNumber" class="text-danger"></span>
+			<br />
+
+			<label for="Price">Price</label>
+			<input type="number" class="form-control" id="Price" name="Price" />
+			<span asp-validation-for="Price" class="text-danger"></span>
+			<br />
+
+			<label for="Bed Count">Bed Count</label>
+			<input type="number" class="form-control" id="Bed Count" name="BedCount" />
+			<span asp-validation-for="BedCount" class="text-danger"></span>
+			<br />
+
+			<label for="Bath Count">Bath Count</label>
+			<input type="number" class="form-control" id="Bath Count" name="BathCount" />
+			<span asp-validation-for="BathCount" class="text-danger"></span>
+			<br />
+
+			<label for="CoverImage">Cover Image</label>
+			<input type="number" class="form-control" id="CoverImage" name="CoverImage" />
+			<span asp-validation-for="CoverImage" class="text-danger"></span>
+			<br />
+
+
+			<button type="submit" class="btn btn-primary">Add Service</button>
+		</form>
+	</div>
+</div>
+

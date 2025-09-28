@@ -1,0 +1,158 @@
+@model UpdateRoomDto
+@{
+    ViewData["Title"] = "Update Room";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0">
+                        <i class="fas fa-bed me-2"></i>Update Room
+                    </h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <input type="hidden" asp-for="RoomId" />
+                        
+                        <div class="row g-3">
+                            <!-- Room Number -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-hashtag me-1 text-primary"></i>Room Number
+                                </label>
+                                <input type="text" class="form-control form-control-lg" asp-for="RoomNumber" placeholder="Enter room number" />
+                                <span asp-validation-for="RoomNumber" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-dollar-sign me-1 text-success"></i>Price per Night
+                                </label>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" step="0.01" class="form-control" asp-for="Price" placeholder="0.00" />
+                                </div>
+                                <span asp-validation-for="Price" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-heading me-1 text-info"></i>Room Title
+                                </label>
+                                <input type="text" class="form-control form-control-lg" asp-for="Title" placeholder="Enter room title" />
+                                <span asp-validation-for="Title" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Cover Image -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-image me-1 text-warning"></i>Cover Image URL
+                                </label>
+                                <input type="url" class="form-control form-control-lg" asp-for="CoverImage" placeholder="https://example.com/image.jpg" />
+                                <span asp-validation-for="CoverImage" class="text-danger small"></span>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>Please provide a valid image URL for the room cover photo
+                                </div>
+                            </div>
+
+                            <!-- Bed Count -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-bed me-1 text-purple"></i>Number of Beds
+                                </label>
+                                <select class="form-select form-select-lg" asp-for="BedCount">
+                                    <option value="">Select bed count</option>
+                                    <option value="1">1 Bed</option>
+                                    <option value="2">2 Beds</option>
+                                    <option value="3">3 Beds</option>
+                                    <option value="4">4 Beds</option>
+                                    <option value="5">5+ Beds</option>
+                                </select>
+                                <span asp-validation-for="BedCount" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Bath Count -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-bath me-1 text-secondary"></i>Number of Bathrooms
+                                </label>
+                                <select class="form-select form-select-lg" asp-for="BathCount">
+                                    <option value="">Select bathroom count</option>
+                                    <option value="1">1 Bathroom</option>
+                                    <option value="2">2 Bathrooms</option>
+                                    <option value="3">3 Bathrooms</option>
+                                    <option value="4">4+ Bathrooms</option>
+                                </select>
+                                <span asp-validation-for="BathCount" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-align-left me-1 text-dark"></i>Room Description
+                                </label>
+                                <textarea class="form-control" asp-for="Description" rows="5" 
+                                          placeholder="Enter detailed room description including amenities, features, and special notes..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>Maximum 1000 characters
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a href="/AdminRoom/Index" class="btn btn-outline-secondary btn-lg me-md-2">
+                                        <i class="fas fa-arrow-left me-1"></i>Back to Rooms
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-save me-1"></i>Update Room
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .text-purple {
+        color: #6f42c1 !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .input-group-text {
+        background-color: #e9ecef;
+        border-color: #ced4da;
+    }
+    
+    .form-text {
+        margin-top: 0.25rem;
+        font-size: 0.875em;
+        color: #6c757d;
+    }
+</style>

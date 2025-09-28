@@ -1,0 +1,57 @@
+@model List<ResultRoomDto>
+@{
+    ViewData["Title"] = "Room Management";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<h1>Room Management</h1>
+
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Room Number</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Bed Count</th>
+                    <th>Bath Count</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    count++;
+                    <tr>
+                        <th>@count</th>
+                        <td>@item.RoomNumber</td>
+                        <td>@item.Title</td>
+                        <td>
+                            @if (item.Description != null && item.Description.Length > 50)
+                            {
+                                <text>@(item.Description.Substring(0, 50))...</text>
+                            }
+                            else
+                            {
+                                @item.Description
+                            }
+                        </td>
+                        <td>$@item.Price</td>
+                        <td>@item.BedCount</td>
+                        <td>@item.BathCount</td>
+                        <td class="text-center">
+                            <a asp-action="View" asp-route-id="@item.RoomId" class="btn btn-primary">View</a>
+                            <a asp-action="UpdateRoom" asp-route-id="@item.RoomId" class="btn btn-warning">Edit</a>
+                            <a asp-action="DeleteRoom" asp-route-id="@item.RoomId" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <a href="/AdminRoom/AddRoom/" class="btn btn-outline-success">Add New Room</a>
+</div>
