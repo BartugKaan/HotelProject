@@ -9,6 +9,14 @@ builder.Services.AddDbContext<Context>();
 builder.Services.AddBusinessLayerServices();
 builder.Services.AddDataAccessLayerServices();
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("HotelProjectCors", policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,7 +31,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("HotelProjectCors");
 app.UseAuthorization();
 
 app.MapControllers();

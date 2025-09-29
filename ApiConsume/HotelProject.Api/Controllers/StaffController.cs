@@ -31,7 +31,7 @@ namespace HotelProject.Api.Controllers
             return Ok("AddStaff works : " + staff.StaffId);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteStaff(int id)
         {
             var staff = _staffService.TGetById(id);
@@ -50,7 +50,11 @@ namespace HotelProject.Api.Controllers
         public IActionResult GetStaff(int id)
         {
             var staff = _staffService.TGetById(id);
-            return Ok($"GetStaff works for id: {staff}");
+            if (staff == null)
+            {
+                return NotFound();
+            }
+            return Ok(staff);
         }
     }
 }

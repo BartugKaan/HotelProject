@@ -1,0 +1,31 @@
+﻿@model AddStaffViewModel
+@{
+    ViewData["Title"] = "AddStaff";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<h1>Add Staff</h1>
+<div class="container">
+    <form method="post">
+		<label for="Name">Full Name</label>
+		<input type="text" class="form-control" id="Name" name="Name" />
+		<br />
+		<label for="Title">Title</label>
+		<input type="text" class="form-control" id="Title" name="Title" />
+		<br />
+		<label for="Image">Image URL</label>
+		<input type="text" class="form-control" id="ImageUrl" name="Image" />
+		<br />
+		<label for="FacebookLink">Facebook URL</label>
+		<input type="text" class="form-control" id="FacebookLink" name="FacebookLink" />
+		<br />
+		<label for="TwitterLink">Twitter URL</label>
+		<input type="text" class="form-control" id="TwitterLink" name="TwitterLink" />
+		<br />
+		<label for="InstegramLink">Intagram URL</label>
+		<input type="text" class="form-control" id="InstegramLink" name="InstegramLink" />
+		<br />
+		<button type="submit" class="btn btn-primary">Add Staff</button>
+    </form>
+</div>
+
