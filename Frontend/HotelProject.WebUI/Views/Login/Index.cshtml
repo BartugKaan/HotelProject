@@ -46,7 +46,24 @@
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
-                                <a class="text-center" href="index.html"> <h4>Rosella</h4></a>
+                                <a class="text-center" href="index.html"> <h4>Hotel Admin Panel</h4></a>
+
+                                @if (!ViewData.ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger mt-3">
+                                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                                        {
+                                            <div>@error.ErrorMessage</div>
+                                        }
+                                    </div>
+                                }
+
+                                @if (TempData["Success"] != null)
+                                {
+                                    <div class="alert alert-success mt-3">
+                                        @TempData["Success"]
+                                    </div>
+                                }
 
                                 <form class="mt-5 mb-5 login-input" method="post">
                                     <div class="form-group">

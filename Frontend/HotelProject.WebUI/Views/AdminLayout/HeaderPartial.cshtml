@@ -149,21 +149,31 @@
                         <span class="activity active"></span>
                         <img src="~/adminweb/images/user/1.png" height="40" width="40" alt="">
                     </div>
-                    <div class="drop-down dropdown-profile   dropdown-menu">
+                    <div class="drop-down dropdown-profile dropdown-menu">
                         <div class="dropdown-content-body">
                             <ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="text-center p-3">
+                                        <strong>@User.Identity.Name</strong><br>
+                                        <small class="text-muted">Administrator</small>
+                                    </li>
+                                    <hr class="my-2">
+                                }
                                 <li>
-                                    <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                    <a href="/AdminContact/Index"><i class="icon-envelope-open"></i> <span>Messages</span></a>
                                 </li>
                                 <li>
-                                    <a href="email-inbox.html"><i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill badge-primary">3</div></a>
+                                    <a href="/SendMessage/Index"><i class="icon-paper-plane"></i> <span>Send Message</span></a>
                                 </li>
-
                                 <hr class="my-2">
                                 <li>
-                                    <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
+                                    <form action="/Login/Logout" method="post" style="display: inline;">
+                                        <button type="submit" class="dropdown-item text-danger" style="background: none; border: none; width: 100%; text-align: left;">
+                                            <i class="icon-key"></i> <span>Logout</span>
+                                        </button>
+                                    </form>
                                 </li>
-                                <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
                             </ul>
                         </div>
                     </div>

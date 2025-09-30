@@ -1,50 +1,189 @@
 ﻿@model List<ResultBookingDto>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Booking Management";
 	Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
 	int count = 0;
 }
 
-<div class="container">
-	<h2 class="mb-2">Booking Managment</h2>
-	<div class="table-responsive">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Client Name</th>
-					<th>E-mail</th>
-					<th>Check In Date</th>
-					<th>Check Out Date</th>
-					<th>Status</th>
-					<th class="text-center">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var item in Model)
-				{
-					count++;
-					<tr>
-						<th>@count</th>
-						<td>@item.Name</td>
-						<td>@item.Email</td>
-						<td>@item.CheckIn.ToShortDateString()</td>
-						<td>@item.CheckOut.ToShortDateString()</td>
-						<td>
-							<span class="badge badge-primary px-2">@item.Status</span>
-						</td>
-						<td class="d-flex justify-content-center ">
-							<a href="/BookingAdmin/ApprovedReservation/@item.BookingId" class="btn btn-outline-success mr-1">Approve</a>
-							<a href="" class="btn btn-outline-warning mr-1">Add To Wait List</a>
-							<a href="" class="btn btn-outline-danger mr-1">Reject</a>
-							<a href="" class="btn btn-outline-info mr-1">Update</a>
-							<a href="" class="btn btn-outline-dark">Details</a>
-						</td>
-					</tr>
-				}
-			</tbody>
-		</table>
+<div class="content-wrapper">
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-6">
+					<h1 class="m-0">Booking Management</h1>
+				</div>
+				<div class="col-sm-6">
+					<ol class="breadcrumb float-sm-right">
+						<li class="breadcrumb-item"><a href="#">Home</a></li>
+						<li class="breadcrumb-item active">Booking Management</li>
+					</ol>
+				</div>
+			</div>
+		</div>
 	</div>
+
+	<!-- Alert Messages -->
+	@if (TempData["Success"] != null)
+	{
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<i class="fa fa-check-circle me-2"></i>
+			@TempData["Success"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+
+	@if (TempData["Error"] != null)
+	{
+		<div class="alert alert-danger alert-dismissible fade show" role="alert">
+			<i class="fa fa-exclamation-circle me-2"></i>
+			@TempData["Error"]
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	}
+
+	<section class="content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">All Bookings</h3>
+							<div class="card-tools">
+								<!-- Filter buttons -->
+								<div class="btn-group" role="group">
+									<button type="button" class="btn btn-sm btn-outline-secondary" onclick="filterByStatus('all')">All</button>
+									<button type="button" class="btn btn-sm btn-outline-info" onclick="filterByStatus('Pending')">Pending</button>
+									<button type="button" class="btn btn-sm btn-outline-success" onclick="filterByStatus('Approved')">Approved</button>
+									<button type="button" class="btn btn-sm btn-outline-warning" onclick="filterByStatus('Waiting')">Waiting</button>
+									<button type="button" class="btn btn-sm btn-outline-danger" onclick="filterByStatus('Rejected')">Rejected</button>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							@if (Model != null && Model.Any())
+							{
+								<div class="table-responsive">
+									<table class="table table-bordered table-striped" id="bookingsTable">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Client Name</th>
+												<th>E-mail</th>
+												<th>Check In Date</th>
+												<th>Check Out Date</th>
+												<th>Guests</th>
+												<th>Status</th>
+												<th class="text-center">Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											@foreach (var item in Model)
+											{
+												count++;
+												<tr data-status="@item.Status">
+													<th>@count</th>
+													<td>@item.Name</td>
+													<td>@item.Email</td>
+													<td>@item.CheckIn.ToString("dd MMM yyyy")</td>
+													<td>@item.CheckOut.ToString("dd MMM yyyy")</td>
+													<td>
+														<small>
+															<i class="fa fa-user"></i> @item.AdultCount adults
+															@if (int.Parse(item.ChildrenCount) > 0)
+															{
+																<br><i class="fa fa-child"></i> @item.ChildrenCount children
+															}
+														</small>
+													</td>
+													<td>
+														<span class="badge @(item.Status == "Approved" ? "badge-success" :
+																			item.Status == "Rejected" ? "badge-danger" :
+																			item.Status == "Waiting" ? "badge-warning" : "badge-info") px-2">
+															@item.Status
+														</span>
+													</td>
+													<td class="text-center">
+														<div class="btn-group" role="group">
+															@if (item.Status != "Approved")
+															{
+																<a href="/BookingAdmin/ApprovedReservation/@item.BookingId"
+																   class="btn btn-sm btn-success"
+																   title="Approve"
+																   onclick="return confirm('Are you sure you want to approve this booking?')">
+																	<i class="fa fa-check"></i>
+																</a>
+															}
+															@if (item.Status != "Waiting")
+															{
+																<a href="/BookingAdmin/AddToWaitList/@item.BookingId"
+																   class="btn btn-sm btn-warning"
+																   title="Add to Wait List"
+																   onclick="return confirm('Are you sure you want to add this booking to wait list?')">
+																	<i class="fa fa-clock"></i>
+																</a>
+															}
+															@if (item.Status != "Rejected")
+															{
+																<a href="/BookingAdmin/RejectReservation/@item.BookingId"
+																   class="btn btn-sm btn-danger"
+																   title="Reject"
+																   onclick="return confirm('Are you sure you want to reject this booking?')">
+																	<i class="fa fa-times"></i>
+																</a>
+															}
+															<a href="/BookingAdmin/Update/@item.BookingId"
+															   class="btn btn-sm btn-primary"
+															   title="Update">
+																<i class="fa fa-edit"></i>
+															</a>
+															<a href="/BookingAdmin/Details/@item.BookingId"
+															   class="btn btn-sm btn-info"
+															   title="Details">
+																<i class="fa fa-eye"></i>
+															</a>
+														</div>
+													</td>
+												</tr>
+											}
+										</tbody>
+									</table>
+								</div>
+							}
+							else
+							{
+								<div class="alert alert-info">
+									<i class="fa fa-info-circle"></i> No bookings found.
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 </div>
+
+<script>
+	function filterByStatus(status) {
+		const table = document.getElementById('bookingsTable');
+		const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+		for (let i = 0; i < rows.length; i++) {
+			const row = rows[i];
+			const rowStatus = row.getAttribute('data-status');
+
+			if (status === 'all' || rowStatus === status) {
+				row.style.display = '';
+			} else {
+				row.style.display = 'none';
+			}
+		}
+
+		// Update active button
+		const buttons = document.querySelectorAll('.btn-group button');
+		buttons.forEach(btn => btn.classList.remove('active'));
+		event.target.classList.add('active');
+	}
+</script>
 
 

@@ -1,0 +1,159 @@
+@model ResultBookingDto
+@{
+    ViewData["Title"] = "Booking Details";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Booking Details</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/BookingAdmin">Booking Management</a></li>
+                        <li class="breadcrumb-item active">Details</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fa fa-calendar"></i> Booking Information
+                            </h3>
+                            <div class="card-tools">
+                                <span class="badge @(Model.Status == "Approved" ? "badge-success" :
+                                                    Model.Status == "Rejected" ? "badge-danger" :
+                                                    Model.Status == "Waiting" ? "badge-warning" : "badge-info")">
+                                    @Model.Status
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <strong>Guest Information:</strong><br>
+                                    <i class="fa fa-user"></i> @Model.Name<br>
+                                    <i class="fa fa-envelope"></i> @Model.Email
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Booking Dates:</strong><br>
+                                    <i class="fa fa-sign-in-alt"></i> Check-in: @Model.CheckIn.ToString("dd MMM yyyy")<br>
+                                    <i class="fa fa-sign-out-alt"></i> Check-out: @Model.CheckOut.ToString("dd MMM yyyy")
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <strong>Adults:</strong><br>
+                                    <span class="text-primary">@Model.AdultCount</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Children:</strong><br>
+                                    <span class="text-info">@Model.ChildrenCount</span>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Rooms:</strong><br>
+                                    <span class="text-success">@Model.RoomCount</span>
+                                </div>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(Model.SpecialRequest))
+                            {
+                                <hr>
+                                <div class="mb-3">
+                                    <strong>Special Requests:</strong>
+                                    <div class="bg-light p-3 rounded">
+                                        @Model.SpecialRequest
+                                    </div>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrEmpty(Model.Description))
+                            {
+                                <div class="mb-3">
+                                    <strong>Additional Description:</strong>
+                                    <div class="bg-light p-3 rounded">
+                                        @Model.Description
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            <a href="/BookingAdmin" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"></i> Back to List
+                            </a>
+                            <a href="/BookingAdmin/Update/@Model.BookingId" class="btn btn-primary">
+                                <i class="fa fa-edit"></i> Edit Booking
+                            </a>
+
+                            @if (Model.Status != "Approved")
+                            {
+                                <a href="/BookingAdmin/ApprovedReservation/@Model.BookingId" class="btn btn-success"
+                                   onclick="return confirm('Are you sure you want to approve this booking?')">
+                                    <i class="fa fa-check"></i> Approve
+                                </a>
+                            }
+
+                            @if (Model.Status != "Waiting")
+                            {
+                                <a href="/BookingAdmin/AddToWaitList/@Model.BookingId" class="btn btn-warning"
+                                   onclick="return confirm('Are you sure you want to add this booking to wait list?')">
+                                    <i class="fa fa-clock"></i> Wait List
+                                </a>
+                            }
+
+                            @if (Model.Status != "Rejected")
+                            {
+                                <a href="/BookingAdmin/RejectReservation/@Model.BookingId" class="btn btn-danger float-right"
+                                   onclick="return confirm('Are you sure you want to reject this booking?')">
+                                    <i class="fa fa-times"></i> Reject
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-secondary">
+                        <div class="card-header">
+                            <h3 class="card-title">Booking Summary</h3>
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">ID:</dt>
+                                <dd class="col-sm-8">@Model.BookingId</dd>
+
+                                <dt class="col-sm-4">Status:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge @(Model.Status == "Approved" ? "badge-success" :
+                                                        Model.Status == "Rejected" ? "badge-danger" :
+                                                        Model.Status == "Waiting" ? "badge-warning" : "badge-info")">
+                                        @Model.Status
+                                    </span>
+                                </dd>
+
+                                <dt class="col-sm-4">Duration:</dt>
+                                <dd class="col-sm-8">@((Model.CheckOut - Model.CheckIn).Days) nights</dd>
+
+                                <dt class="col-sm-4">Total Guests:</dt>
+                                <dd class="col-sm-8">@(int.Parse(Model.AdultCount) + int.Parse(Model.ChildrenCount))</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

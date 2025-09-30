@@ -1,0 +1,121 @@
+@model CreateSendMessageDto
+@{
+    ViewData["Title"] = "Send New Message";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Send New Message</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/SendMessage">Send Messages</a></li>
+                        <li class="breadcrumb-item active">Create</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Message Details</h3>
+                        </div>
+                        <form asp-action="Create" method="post">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label asp-for="Title">Message Title</label>
+                                    <input asp-for="Title" class="form-control" placeholder="Enter message title">
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="SenderName">Your Name</label>
+                                            <input asp-for="SenderName" class="form-control" placeholder="Enter your name">
+                                            <span asp-validation-for="SenderName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="SenderMail">Your Email</label>
+                                            <input asp-for="SenderMail" type="email" class="form-control" placeholder="Enter your email">
+                                            <span asp-validation-for="SenderMail" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ReceiverName">Receiver Name</label>
+                                            <input asp-for="ReceiverName" class="form-control" placeholder="Enter receiver name">
+                                            <span asp-validation-for="ReceiverName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ReceiverMail">Receiver Email</label>
+                                            <input asp-for="ReceiverMail" type="email" class="form-control" placeholder="Enter receiver email">
+                                            <span asp-validation-for="ReceiverMail" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Content">Message Content</label>
+                                    <textarea asp-for="Content" class="form-control" rows="8" placeholder="Enter your message content"></textarea>
+                                    <span asp-validation-for="Content" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-paper-plane"></i> Send Message
+                                </button>
+                                <a href="/SendMessage" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"></i> Back to List
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <h5><i class="icon fa fa-info"></i> Email Notifications</h5>
+                                When you send a message:
+                                <ul class="mt-2">
+                                    <li>The receiver will get an email notification</li>
+                                    <li>You will get a confirmation email</li>
+                                    <li>The message will be saved in the system</li>
+                                </ul>
+                            </div>
+                            <div class="alert alert-warning">
+                                <h5><i class="icon fa fa-warning"></i> Note</h5>
+                                Please make sure the email addresses are correct before sending the message.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

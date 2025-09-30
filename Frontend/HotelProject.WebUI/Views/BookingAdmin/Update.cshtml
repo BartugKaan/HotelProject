@@ -1,0 +1,199 @@
+@model ResultBookingDto
+@{
+    ViewData["Title"] = "Update Booking";
+    Layout = "~/Views/AdminLayout/_AdminLayout.cshtml";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Update Booking</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/BookingAdmin">Booking Management</a></li>
+                        <li class="breadcrumb-item active">Update</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa fa-check-circle me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa fa-exclamation-circle me-2"></i>
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Booking Information</h3>
+                        </div>
+                        <form asp-action="Update" method="post">
+                            <input asp-for="BookingId" type="hidden" />
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Name">Guest Name</label>
+                                            <input asp-for="Name" class="form-control" placeholder="Enter guest name">
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Email">Email Address</label>
+                                            <input asp-for="Email" type="email" class="form-control" placeholder="Enter email address">
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="CheckIn">Check-In Date</label>
+                                            <input asp-for="CheckIn" type="date" class="form-control">
+                                            <span asp-validation-for="CheckIn" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="CheckOut">Check-Out Date</label>
+                                            <input asp-for="CheckOut" type="date" class="form-control">
+                                            <span asp-validation-for="CheckOut" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="AdultCount">Adults</label>
+                                            <select asp-for="AdultCount" class="form-control">
+                                                <option value="1">1 Adult</option>
+                                                <option value="2">2 Adults</option>
+                                                <option value="3">3 Adults</option>
+                                                <option value="4">4 Adults</option>
+                                                <option value="5">5+ Adults</option>
+                                            </select>
+                                            <span asp-validation-for="AdultCount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="ChildrenCount">Children</label>
+                                            <select asp-for="ChildrenCount" class="form-control">
+                                                <option value="0">No Children</option>
+                                                <option value="1">1 Child</option>
+                                                <option value="2">2 Children</option>
+                                                <option value="3">3 Children</option>
+                                                <option value="4">4+ Children</option>
+                                            </select>
+                                            <span asp-validation-for="ChildrenCount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label asp-for="RoomCount">Rooms</label>
+                                            <select asp-for="RoomCount" class="form-control">
+                                                <option value="1">1 Room</option>
+                                                <option value="2">2 Rooms</option>
+                                                <option value="3">3 Rooms</option>
+                                                <option value="4">4+ Rooms</option>
+                                            </select>
+                                            <span asp-validation-for="RoomCount" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Status">Status</label>
+                                    <select asp-for="Status" class="form-control">
+                                        <option value="Pending">Pending</option>
+                                        <option value="Approved">Approved</option>
+                                        <option value="Rejected">Rejected</option>
+                                        <option value="Waiting">Waiting List</option>
+                                    </select>
+                                    <span asp-validation-for="Status" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="SpecialRequest">Special Requests</label>
+                                    <textarea asp-for="SpecialRequest" class="form-control" rows="3" placeholder="Any special requests or requirements"></textarea>
+                                    <span asp-validation-for="SpecialRequest" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label asp-for="Description">Additional Notes</label>
+                                    <textarea asp-for="Description" class="form-control" rows="3" placeholder="Additional notes or description"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save"></i> Update Booking
+                                </button>
+                                <a href="/BookingAdmin" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"></i> Back to List
+                                </a>
+                                <a href="/BookingAdmin/Details/@Model.BookingId" class="btn btn-info">
+                                    <i class="fa fa-eye"></i> View Details
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">Booking Summary</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fa fa-calendar"></i></span>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Booking ID</span>
+                                    <span class="info-box-number">@Model.BookingId</span>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <h5><i class="icon fa fa-info"></i> Important!</h5>
+                                <ul class="mb-0">
+                                    <li>Check-out date must be after check-in date</li>
+                                    <li>Status changes will affect booking confirmation</li>
+                                    <li>Email notifications will be sent to the guest</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

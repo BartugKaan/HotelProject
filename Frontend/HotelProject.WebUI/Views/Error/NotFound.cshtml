@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Page Not Found";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="h-100" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>404 - Page Not Found</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/adminweb/assets/images/favicon.png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link href="~/adminweb/css/style.css" rel="stylesheet">
+</head>
+
+<body class="h-100">
+    <div class="login-form-bg h-100">
+        <div class="container h-100">
+            <div class="row justify-content-center h-100">
+                <div class="col-xl-6">
+                    <div class="form-input-content">
+                        <div class="card login-form mb-0">
+                            <div class="card-body pt-5 text-center">
+                                <div class="mb-4">
+                                    <i class="fas fa-search text-warning" style="font-size: 5rem;"></i>
+                                </div>
+
+                                <h1 class="text-warning mb-4" style="font-size: 4rem;">404</h1>
+
+                                <h4 class="mb-4">Page Not Found</h4>
+
+                                <div class="alert alert-warning" role="alert">
+                                    <p class="mb-0">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+                                </div>
+
+                                <div class="mt-4">
+                                    <a href="javascript:history.back()" class="btn btn-warning me-3">
+                                        <i class="fas fa-arrow-left"></i> Go Back
+                                    </a>
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <a href="/Staff/Index" class="btn btn-primary">
+                                            <i class="fas fa-home"></i> Admin Dashboard
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Login/Index" class="btn btn-primary">
+                                            <i class="fas fa-sign-in-alt"></i> Login
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="~/adminweb/plugins/common/common.min.js"></script>
+    <script src="~/adminweb/js/custom.min.js"></script>
+</body>
+</html>
